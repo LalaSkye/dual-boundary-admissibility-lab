@@ -1,0 +1,9 @@
+[project]
+name = "dual-boundary-admissibility-lab"
+version = "0.1.0"
+description = "Admissibility Rotation Corridor — dual-boundary interpretive admissibility with downstream state mutation control"
+license = "MIT"
+requires-python = ">=3.11"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
