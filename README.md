@@ -1,17 +1,18 @@
+[![CI](https://github.com/LalaSkye/dual-boundary-admissibility-lab/actions/workflows/ci.yml/badge.svg)](https://github.com/LalaSkye/dual-boundary-admissibility-lab/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Python](https://img.shields.io/badge/python-3.10%2B-blue)](https://www.python.org/)
+[![stdlib only](https://img.shields.io/badge/dependencies-stdlib%20only-brightgreen)](pyproject.toml)
+[![Tests](https://img.shields.io/badge/tests-261%20passing-brightgreen)]()
+
 # dual-boundary-admissibility-lab
 
-Admissibility Rotation Corridor — a closed constitutional runtime with visible interrupt geometry.
+**Two gates. One corridor. Meaning construction governed before execution is even considered.**
 
-## What This Is
+## Why This Exists
 
-A deterministic control system that constrains **both** what may count as a valid transition candidate **and** what state mutations may occur under live pressure.
+Every published AI governance system gates at the execution boundary — the moment an action is about to change state. Faramesh says interpretation governance is "explicitly outside the scope." Thinking OS says "you can't govern thinking directly."
 
-This repo integrates two boundary layers into a single continuous mechanism:
-
-- **Upstream boundary**: eliminates interpretation drift before any transition candidate exists
-- **Downstream boundary**: enforces state admissibility before any mutation occurs
-
-Between them: pressure monitoring, C-sector rotation, and HALT/HOLD logic with three adversarial fixes built in from day one.
+This repo treats that as a design choice, not an axiom. It governs at the interpretation layer — *before* a transition candidate exists — then gates again at the mutation boundary. The corridor between the two boundaries is instrumented under pressure. Nothing executes without passing both.
 
 ## Architecture
 
@@ -25,7 +26,7 @@ signal
   → commit | deny
 ```
 
-### The Two-Boundary Model
+### The Two-Boundary Corridor
 
 ```
  ┌────────────────────────────────────────────────────────┐
@@ -59,13 +60,12 @@ A → B → D
     C
 ```
 
-Where:
 - **A** = signal initiation
 - **B** = exploration / transformation
 - **D** = integration / stabilisation
-- **C** = interrupt vector
+- **C** = interrupt vector (pressure-activated, not failure-activated)
 
-And additionally:
+Additional invariants on the geometry:
 - HOLD for insufficiency
 - HALT for violation
 - RELEASE only by explicit verdict
@@ -74,6 +74,60 @@ And additionally:
 - PROVENANCE must persist through wrapping
 - STATE must be reconstructable
 - CLOSURE must be explicit
+
+## Quick Start
+
+```bash
+git clone https://github.com/LalaSkye/dual-boundary-admissibility-lab.git
+cd dual-boundary-admissibility-lab
+python examples/demo_scenario.py
+```
+
+Expected output:
+
+```
+========================================================================
+  Admissibility Rotation Corridor — Demo Scenario
+========================================================================
+
+── Step 1: Admissible packet enters ──
+  Outcome: commit
+  Admitted: True
+  ✓ Packet committed successfully
+
+── Step 2: Pressure rises (degraded signal + denials) ──
+  Total pressure: 0.8550
+  Recommendation: rotate_c
+  Signal quality: DEGRADED
+  ✓ Pressure high enough for C rotation
+
+── Step 3: C rotates into control ──
+  Rotation event: <uuid>
+  C active: True
+  ✓ C rotation completed
+
+── Step 4: Emergency constraint declared ──
+  HALT entered: <uuid>
+  Triggering node: node_B
+  Diagnosing node: node_C
+  Emergency constraint: <uuid>
+  Provisional: True
+  ✓ Emergency constraint declared (provisional)
+
+── Step 5: Unsafe mutation denied ──
+  Outcome: deny
+  ✓ Mutation denied (halt active)
+
+── Step 6: HOLD_FOR_RESOLUTION emitted ──
+  Release verdict: HOLD_FOR_RESOLUTION
+  ✓ HALT released with HOLD_FOR_RESOLUTION
+
+========================================================================
+  Demo scenario completed successfully!
+========================================================================
+```
+
+The demo runs the full six-step scenario in sequence: clean commit under normal conditions, pressure accumulation, C rotation, emergency constraint declaration, mutation denial, and HOLD_FOR_RESOLUTION.
 
 ## Modules
 
@@ -86,54 +140,32 @@ And additionally:
 | `mutation_boundary.py` | Downstream boundary: state mutation gate with append-only state objects |
 | `constraint_declaration.py` | Constraint registry: declared constraints + emergency provisional declarations |
 | `halt_hold_logic.py` | HALT/HOLD entry/exit, diagnostic timeout, release conditions, resume targeting |
-| `corridor.py` | The full pipeline: wires everything together |
+| `corridor.py` | Full pipeline: wires all modules into the corridor |
 
-## Three Adversarial Fixes (Built In)
-
-These fixes close escape routes identified by adversarial review:
-
-1. **Diagnostic timeout** (§1): HALT cannot deadlock. If diagnosis doesn't complete within the timeout window, HALT escalates to HOLD_FOR_RESOLUTION.
-
-2. **Emergency constraint declaration** (§4): Emergency HALT claims cannot bypass the constraint declaration surface. Any immediate-damage assertion MUST emit a provisional constraint that is valid only for the HALT duration and must be ratified during diagnostic review.
-
-3. **Second-node review** (§8): When the diagnosing node is also the interrupt source, resume target classification requires review by a second node. Prevents adversarial resume target manipulation.
-
-## 10 Admissibility Rules (Upstream)
+## 10 Admissibility Rules (Upstream Boundary)
 
 | # | Rule | What It Catches |
 |---|---|---|
-| 1 | EVIDENCE_ANCHOR_REQUIRED | Empty source span — no evidence backing |
-| 2 | ASSUMPTION_COUNT_BOUND | Too many assumptions (default threshold: 3) |
-| 3 | AMBIGUITY_PRESERVATION_REQUIRED | Collapsed ambiguity without documentation |
-| 4 | CONFIDENCE_CONSEQUENCE_MATCH | LOW confidence + HIGH/CRITICAL consequence |
-| 5 | ACTOR_INTENT_ATTRIBUTION_BAN | Mental state attribution without evidence |
-| 6 | SCOPE_DRIFT_FAIL | Interpretation expands beyond source |
-| 7 | TEMPORAL_DRIFT_FAIL | Temporal claims not in source signal |
-| 8 | PROHIBITED_INFERENTIAL_JUMP | Correlation→causation, absence→denial, etc. |
-| 9 | PROVENANCE_REQUIRED | Missing provenance chain |
-| 10 | OMITTED_ALTERNATIVE_DETECTION | Multiple readings without documented alternatives |
+| 1 | `EVIDENCE_ANCHOR_REQUIRED` | Empty source span — no evidence backing |
+| 2 | `ASSUMPTION_COUNT_BOUND` | Too many assumptions (default threshold: 3) |
+| 3 | `AMBIGUITY_PRESERVATION_REQUIRED` | Collapsed ambiguity without documentation |
+| 4 | `CONFIDENCE_CONSEQUENCE_MATCH` | LOW confidence + HIGH/CRITICAL consequence |
+| 5 | `ACTOR_INTENT_ATTRIBUTION_BAN` | Mental state attribution without evidence |
+| 6 | `SCOPE_DRIFT_FAIL` | Interpretation expands beyond source |
+| 7 | `TEMPORAL_DRIFT_FAIL` | Temporal claims not in source signal |
+| 8 | `PROHIBITED_INFERENTIAL_JUMP` | Correlation→causation, absence→denial, etc. |
+| 9 | `PROVENANCE_REQUIRED` | Missing provenance chain |
+| 10 | `OMITTED_ALTERNATIVE_DETECTION` | Multiple readings without documented alternatives |
 
-## Running Tests
+## Three Adversarial Fixes (Built In)
 
-```bash
-python -m pytest tests/ -v
-```
+These close escape routes identified during adversarial review:
 
-261 tests. stdlib only. No external dependencies.
+1. **Diagnostic timeout** (§1): HALT cannot deadlock. If diagnosis does not complete within the timeout window, HALT escalates to HOLD_FOR_RESOLUTION.
 
-## Demo Scenario
+2. **Emergency constraint declaration** (§4): Emergency HALT claims cannot bypass the constraint declaration surface. Any immediate-damage assertion must emit a provisional constraint valid only for the HALT duration, ratified during diagnostic review.
 
-```bash
-python examples/demo_scenario.py
-```
-
-Runs the full six-step scenario:
-1. Admissible packet enters → committed
-2. Pressure rises (degraded signal + denials)
-3. C rotates into control
-4. Provisional emergency constraint declared
-5. Unsafe mutation denied
-6. HOLD_FOR_RESOLUTION emitted
+3. **Second-node review** (§8): When the diagnosing node is also the interrupt source, resume target classification requires review by a second node. Prevents adversarial resume target manipulation.
 
 ## Invariants
 
@@ -148,9 +180,31 @@ Runs the full six-step scenario:
 - No zombie continuation after closure
 - No cosmetic laundering of logic (provenance lock)
 
+## Running Tests
+
+```bash
+python -m pytest tests/ -v
+```
+
+261 tests. stdlib only. No external dependencies.
+
 ## Lineage
 
-This repo subsumes and extends [interpretation-boundary-lab](https://github.com/LalaSkye/interpretation-boundary-lab). The upstream admissibility layer is the same 10-rule system with closed graph topology. The downstream layer, pressure monitoring, C-sector rotation, HALT/HOLD logic, and constraint declaration are new — derived from the Engine Archive Completion Patch and its adversarial review.
+This repo subsumes and extends [interpretation-boundary-lab](https://github.com/LalaSkye/interpretation-boundary-lab). The upstream admissibility layer uses the same 10-rule system with closed graph topology. The downstream layer, pressure monitoring, C-sector rotation, HALT/HOLD logic, and constraint declaration are new — derived from the Engine Archive Completion Patch and its adversarial review.
+
+## Part of the Execution Boundary Series
+
+| Repo | Layer | What It Does |
+|---|---|---|
+| [interpretation-boundary-lab](https://github.com/LalaSkye/interpretation-boundary-lab) | Upstream boundary | 10-rule admissibility gate for interpretations |
+| [dual-boundary-admissibility-lab](https://github.com/LalaSkye/dual-boundary-admissibility-lab) | Full corridor | Dual-boundary model with pressure monitoring and C-sector rotation |
+| [execution-boundary-lab](https://github.com/LalaSkye/execution-boundary-lab) | Execution boundary | Demonstrates cascading failures without upstream governance |
+| [stop-machine](https://github.com/LalaSkye/stop-machine) | Control primitive | Deterministic three-state stop controller |
+| [constraint-workshop](https://github.com/LalaSkye/constraint-workshop) | Control primitives | Authority gate, invariant litmus, stop machine |
+| [csgr-lab](https://github.com/LalaSkye/csgr-lab) | Measurement | Contracted stability and drift measurement |
+| [invariant-lock](https://github.com/LalaSkye/invariant-lock) | Drift prevention | Refuse execution unless version increments |
+| [policy-lint](https://github.com/LalaSkye/policy-lint) | Policy validation | Deterministic linter for governance statements |
+| [deterministic-lexicon](https://github.com/LalaSkye/deterministic-lexicon) | Vocabulary | Fixed terms, exact matches, no inference |
 
 ## License
 
