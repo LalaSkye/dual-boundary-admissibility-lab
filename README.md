@@ -10,7 +10,7 @@
 
 ## Why This Exists
 
-Every published AI governance system gates at the execution boundary — the moment an action is about to change state. Faramesh says interpretation governance is "explicitly outside the scope." Thinking OS says "you can't govern thinking directly."
+Every published AI governance system gates at the execution boundary — the moment an action is about to change state. Faramesh says interpretation governance is "explicitly outside the scope." Other published approaches say "you can't govern thinking directly."
 
 This repo treats that as a design choice, not an axiom. It governs at the interpretation layer — *before* a transition candidate exists — then gates again at the mutation boundary. The corridor between the two boundaries is instrumented under pressure. Nothing executes without passing both.
 
@@ -200,7 +200,7 @@ This repo subsumes and extends [interpretation-boundary-lab](https://github.com/
 | [dual-boundary-admissibility-lab](https://github.com/LalaSkye/dual-boundary-admissibility-lab) | Full corridor | Dual-boundary model with pressure monitoring and C-sector rotation |
 | [execution-boundary-lab](https://github.com/LalaSkye/execution-boundary-lab) | Execution boundary | Demonstrates cascading failures without upstream governance |
 | [stop-machine](https://github.com/LalaSkye/stop-machine) | Control primitive | Deterministic three-state stop controller |
-| [constraint-workshop](https://github.com/LalaSkye/constraint-workshop) | Control primitives | Authority gate, invariant litmus, stop machine |
+| [constraint-workshop](https://github.com/LalaSkye/constraint-workshop) | Control primitives | Execution gate, invariant litmus, stop machine |
 | [csgr-lab](https://github.com/LalaSkye/csgr-lab) | Measurement | Contracted stability and drift measurement |
 | [invariant-lock](https://github.com/LalaSkye/invariant-lock) | Drift prevention | Refuse execution unless version increments |
 | [policy-lint](https://github.com/LalaSkye/policy-lint) | Policy validation | Deterministic linter for governance statements |
@@ -221,3 +221,8 @@ No rights to use, reproduce, or implement are granted without explicit permissio
 **Repository owner:** [LalaSkye](https://github.com/LalaSkye)
 **Status:** Active research / architecture work
 **Part of:** [Execution Boundary Series](https://github.com/LalaSkye) — TrinityOS / AlvianTech
+
+---
+
+This repository demonstrates deterministic control using standard engineering techniques. No proprietary frameworks or external implementations are used.
+
